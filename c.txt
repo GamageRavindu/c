@@ -1,75 +1,4 @@
-//stack
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#define max_stack 20
-
-typedef int stackEntry;
-
-typedef struct {
-    int top;
-    stackEntry entry[max_stack];
-}Stack;
-
-void createStack(Stack *s) {
-    s->top = -1;
-}
-
-typedef enum {
-    FALSE,
-    TRUE
-}boolean;
-
-boolean isStackEmpty(const Stack *s) {
-    return(s->top == -1);
-}
-
-boolean isStackFull(const Stack *s) {
-    return(s->top == max_stack -1 );
-}
-
-void push(stackEntry item, Stack *s) {
-    if(!isStackFull(s)) {
-        s->entry[++s->top] = item;
-    } else {
-        printf("- stack is full ! -");
-        exit(1);
-    }
-}
-
-void pop(stackEntry *item, Stack *s) {
-    if(!isStackEmpty(s)) {
-        *item = s->entry[s->top--];
-    } else {
-        printf("- stack is empty ! -");
-        exit(1);
-    }
-}
-
-void printStack(Stack *s){
-    if(isStackEmpty(s)){
-        printf("stack is empty! ");
-    } else {
-        printf("stack content is:\n");
-        for(int i= s->top; i >= 0; i--){
-            printf("\t%d", s->entry[i]);
-            printf("\n");
-        }
-    }
-}
-
-
-int main(){
-    Stack s;
-    createStack(&s);
-    push(10, &s);
-    push(20, &s);
-    push(30, &s);
-    push(40, &s);
-    printStack(&s);
-    return 0;
-}
 
 //list queue
 
@@ -214,6 +143,80 @@ int main(void) {
     return 0;
 }
 
+
+//stack
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define max_stack 20
+
+typedef int stackEntry;
+
+typedef struct {
+    int top;
+    stackEntry entry[max_stack];
+}Stack;
+
+void createStack(Stack *s) {
+    s->top = -1;
+}
+
+typedef enum {
+    FALSE,
+    TRUE
+}boolean;
+
+boolean isStackEmpty(const Stack *s) {
+    return(s->top == -1);
+}
+
+boolean isStackFull(const Stack *s) {
+    return(s->top == max_stack -1 );
+}
+
+void push(stackEntry item, Stack *s) {
+    if(!isStackFull(s)) {
+        s->entry[++s->top] = item;
+    } else {
+        printf("- stack is full ! -");
+        exit(1);
+    }
+}
+
+void pop(stackEntry *item, Stack *s) {
+    if(!isStackEmpty(s)) {
+        *item = s->entry[s->top--];
+    } else {
+        printf("- stack is empty ! -");
+        exit(1);
+    }
+}
+
+void printStack(Stack *s){
+    if(isStackEmpty(s)){
+        printf("stack is empty! ");
+    } else {
+        printf("stack content is:\n");
+        for(int i= s->top; i >= 0; i--){
+            printf("\t%d", s->entry[i]);
+            printf("\n");
+        }
+    }
+}
+
+
+int main(){
+    Stack s;
+    createStack(&s);
+    push(10, &s);
+    push(20, &s);
+    push(30, &s);
+    push(40, &s);
+    printStack(&s);
+    return 0;
+}
+
 //sort
 
 void insertionSort(int arr[], int size) {
@@ -270,4 +273,95 @@ int binarySearch(int arr[], int size, int target) {
     }
     return -1; // Target not found
 }
+
+//linked list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} Node;
+
+Node* createNode(int data) {
+    Node *newNode = (Node *)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void insertAtEnd(Node **head, int data) {
+    Node *newNode = createNode(data);
+    if (*head == NULL) {
+        *head = newNode;
+    } else {
+        Node *temp = *head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+
+void printList(Node *head) {
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+
+
+//linked queue
+typedef struct QueueNode {
+    int data;
+    struct QueueNode *next;
+} QueueNode;
+
+typedef struct {
+    QueueNode *front;
+    QueueNode *rear;
+} Queue;
+
+void initializeQueue(Queue *q) {
+    q->front = q->rear = NULL;
+}
+
+void enqueue(Queue *q, int data) {
+    QueueNode *newNode = (QueueNode *)malloc(sizeof(QueueNode));
+    newNode->data = data;
+    newNode->next = NULL;
+    if (q->rear == NULL) {
+        q->front = q->rear = newNode;
+    } else {
+        q->rear->next = newNode;
+        q->rear = newNode;
+    }
+}
+
+int dequeue(Queue *q) {
+    if (q->front == NULL) {
+        printf("Queue is empty!\n");
+        exit(1);
+    }
+    int data = q->front->data;
+    QueueNode *temp = q->front;
+    q->front = q->front->next;
+    if (q->front == NULL) {
+        q->rear = NULL;
+    }
+    free(temp);
+    return data;
+}
+
+void printQueue(Queue *q) {
+    QueueNode *temp = q->front;
+    while (temp != NULL) {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
 
