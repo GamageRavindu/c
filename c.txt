@@ -1,3 +1,5 @@
+//stack
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -53,6 +55,7 @@ void printStack(Stack *s){
         for(int i= s->top; i >= 0; i--){
             printf("\t%d", s->entry[i]);
             printf("\n");
+        }
     }
 }
 
@@ -67,3 +70,147 @@ int main(){
     printStack(&s);
     return 0;
 }
+
+//list queue
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define maxqueue 10
+typedef enum {False, True} Boolean;
+typedef float queue_element;
+
+typedef struct {
+    queue_element queue_item[maxqueue];
+    int front;
+    int rear;
+    int count;
+}queue;
+
+void create_queue(queue *q) {
+    q->count = 0;
+    q->front = 0;
+    q->rear = -1;
+}
+
+int isqueueempty(queue *q) {
+    if (q->count == 0) {
+        return True;
+    }
+    return False;
+}
+
+int isqueuefull(queue *q) {
+    if (q->count == maxqueue ) {
+        return True;
+    } else {
+        return False;
+    }
+}
+
+void append(queue *q, float x) {
+    if (isqueuefull(q)) {
+        printf(("queue if full  \n"));
+        exit(1);
+    } else {
+        q->queue_item[++q->rear] = x;
+        q->count++;
+    }
+}
+
+void serve(queue *q, float *x ) {
+    if (isqueueempty(q)) {
+        printf("queue is empty");
+    } else {
+        *x = q->queue_item[q->front++];
+        q->count--;
+    }
+}
+
+//array list
+#define maxlist 10
+
+typedef float list_type;
+
+typedef struct {
+    list_type list_element[maxlist];
+    int count;
+}list;
+
+void create_list(list *l) {
+    l->count = 0;
+}
+
+
+
+Boolean islistempty(list *l) {
+    return (l->count == 0);
+}
+Boolean islistfull(list *l ) {
+    return (l->count == maxlist);
+}
+
+void insertlist(list *l, float x) {
+    if (islistfull(l)) {
+        printf("list is full\n");
+    } else {
+        l->list_element[l->count++] = x;
+    }
+}
+
+void bubble_sort(list *l) {
+    for(int i=0; i<= l->count -2; i++) {
+        for (int j=0; j<= l->count -2 -i; j++) {
+            if (l->list_element[j] > l->list_element[j+1]) {
+                float k = l->list_element[j];
+                l->list_element[j] = l->list_element[j+1];
+                l->list_element[j+1] = k;
+            }
+        }
+    }
+}
+
+int main(void) {
+    queue q;
+    list l;
+    create_queue(&q);
+    create_list(&l);
+
+    append(&q, 5.4);
+    append(&q, 3.6);
+    append(&q, 106);
+    append(&q, 8);
+    append(&q, 0.9);
+    append(&q, 27.2);
+    append(&q, 8.4);
+    append(&q, 1900.5);
+    append(&q, 4.5);
+    printf("\n queue\n");
+
+    for (int i=0; i<9; i++) {
+        printf("%.2f ", q.queue_item[i]);
+    }
+
+    for (int i=0; i<9; i++) {
+        float y;
+        serve(&q, &y);
+        insertlist(&l, y);
+    }
+
+    printf("\n list\n");
+
+    for (int i=0; i<9; i++) {
+        printf("%.2f ", l.list_element[i]);
+    }
+
+    printf("\n sorted list \n");
+    bubble_sort(&l);
+
+    for (int i=0; i<9; i++) {
+        printf("%.2f ", l.list_element[i]);
+    }
+
+
+    return 0;
+}
+
