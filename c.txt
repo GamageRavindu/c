@@ -256,23 +256,32 @@ void selectionSort(int arr[], int size) {
 
 
 
+//LINEAR SEARCH
 
-int binarySearch(int arr[], int size, int target) {
-    int low = 0, high = size - 1;
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-
-        if (arr[mid] == target) {
-            return mid; // Target found
-        }
-        if (arr[mid] < target) {
-            low = mid + 1;
-        } else {
-            high = mid - 1;
-        }
-    }
-    return -1; // Target not found
+int linearSearch(int arr[], int n, int x) {
+    for (int i = 0; i < n; i++)
+        if (arr[i] == x)
+            return i;
+    return -1;
 }
+
+
+
+//BINARY SEARCH
+
+
+int binarySearch(int arr[], int l, int r, int x) {
+    if (r >= l) {
+        int mid = (r + l) / 2;
+        if (arr[mid] == x)
+            return mid;
+        if (arr[mid] > x)
+            return binarySearch(arr, l, mid - 1, x);
+        return binarySearch(arr, mid + 1, r, x);
+    }
+    return -1;
+}
+
 
 //linked list
 
@@ -363,5 +372,91 @@ void printQueue(Queue *q) {
     }
     printf("NULL\n");
 }
+
+
+
+//stackLinked----------------------------
+typedef enum {false, true} bool;
+
+typedef struct
+{
+    int item;
+    Node *next;
+}Node;
+
+
+typedef struct 
+{
+    Node *top;
+    bool isfull;
+    int no_ele;
+
+}StackLinked;
+
+void createStack(StackLinked *s){
+    s->top = NULL;
+    s->isfull = false;
+    s->no_ele = 0;
+};
+
+void linkedpush(StackLinked *s, int x){
+    Node *np;
+    np = (Node*)malloc(sizeof(Node));
+    if (np == NULL)
+    {
+        printf("Failed");
+    }else
+    {
+        np->item = x;
+        np->next = s->top;
+        s->top = np;
+        s->no_ele++;     
+    }
+    
+};
+
+void linkedpop(StackLinked *s, int *item){
+    Node *np;
+    *item = np->item;
+    np = s->top;
+    s->top = s->top->next;
+    s->no_ele--;
+    free(np);
+};
+
+
+
+
+//binary search tree ----------------------------------
+
+struct node {
+    int key;
+    struct node *left, *right;
+};
+
+struct node *newNode(int item) {
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp->key = item;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+void inorderBST(struct node *root) {
+    if (root != NULL) {
+        inorderBST(root->left);
+        printf("%d \n", root->key);
+        inorderBST(root->right);
+    }
+}
+
+struct node *insert(struct node *node, int key) {
+    if (node == NULL) return newNode(key);
+    if (key < node->key)
+        node->left = insert(node->left, key);
+    else if (key > node->key)
+        node->right = insert(node->right, key);
+    return node;
+}
+
 
 
