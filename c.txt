@@ -214,3 +214,60 @@ int main(void) {
     return 0;
 }
 
+//sort
+
+void insertionSort(int arr[], int size) {
+    for (int i = 1; i < size; i++) {
+        int key = arr[i];
+        int j = i - 1;
+
+        // Shift elements to the right to create space for the key
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+
+void selectionSort(int arr[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        int minIndex = i;
+
+        // Find the index of the smallest element in the unsorted part
+        for (int j = i + 1; j < size; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+
+        // Swap the smallest element with the current element
+        if (minIndex != i) {
+            int temp = arr[i];
+            arr[i] = arr[minIndex];
+            arr[minIndex] = temp;
+        }
+    }
+}
+
+
+
+
+int binarySearch(int arr[], int size, int target) {
+    int low = 0, high = size - 1;
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == target) {
+            return mid; // Target found
+        }
+        if (arr[mid] < target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1; // Target not found
+}
+
